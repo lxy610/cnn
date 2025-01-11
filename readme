@@ -44,7 +44,7 @@ ConvNet
 |
 |-- Output Layer (10 classes)
 
-#2 加入残差
+#2 加入残差 81.82%
 ConvNet
 |
 |-- Input Layer (3 channels)
