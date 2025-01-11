@@ -43,3 +43,58 @@ ConvNet
 |-- fc2: Linear(512, 10)
 |
 |-- Output Layer (10 classes)
+
+#2 加入残差
+ConvNet
+|
+|-- Input Layer (3 channels)
+|
+|-- conv1: Conv2d(3, 64, 3, padding=1)
+|   |-- bn1: BatchNorm2d(64)
+|   |-- ReLU Activation
+|
+|-- resblock1: ResidualBlock(64, 64)
+|   |-- conv1: Conv2d(64, 64, 3, stride=1, padding=1)
+|   |-- bn1: BatchNorm2d(64)
+|   |-- ReLU Activation
+|   |-- conv2: Conv2d(64, 64, 3, stride=1, padding=1)
+|   |-- bn2: BatchNorm2d(64)
+|   |-- shortcut: (Conditional)
+|       |-- Conv2d(64, 64, 1, stride=1) (if stride != 1 or in_channels != out_channels)
+|       |-- BatchNorm2d(64)
+|   |-- ReLU Activation (after addition)
+|
+|-- resblock2: ResidualBlock(64, 128, stride=2)
+|   |-- conv1: Conv2d(64, 128, 3, stride=2, padding=1)
+|   |-- bn1: BatchNorm2d(128)
+|   |-- ReLU Activation
+|   |-- conv2: Conv2d(128, 128, 3, stride=1, padding=1)
+|   |-- bn2: BatchNorm2d(128)
+|   |-- shortcut: (Conditional)
+|       |-- Conv2d(64, 128, 1, stride=2) (if stride != 1 or in_channels != out_channels)
+|       |-- BatchNorm2d(128)
+|   |-- ReLU Activation (after addition)
+|
+|-- resblock3: ResidualBlock(128, 256, stride=2)
+|   |-- conv1: Conv2d(128, 256, 3, stride=2, padding=1)
+|   |-- bn1: BatchNorm2d(256)
+|   |-- ReLU Activation
+|   |-- conv2: Conv2d(256, 256, 3, stride=1, padding=1)
+|   |-- bn2: BatchNorm2d(256)
+|   |-- shortcut: (Conditional)
+|       |-- Conv2d(128, 256, 1, stride=2) (if stride != 1 or in_channels != out_channels)
+|       |-- BatchNorm2d(256)
+|   |-- ReLU Activation (after addition)
+|
+|-- pool: MaxPool2d(2, 2)
+|
+|-- Flatten Layer (256 * 4 * 4)
+|
+|-- dropout: Dropout(0.5)
+|
+|-- fc1: Linear(256 * 4 * 4, 512)
+|   |-- ReLU Activation
+|
+|-- fc2: Linear(512, 10)
+|
+|-- Output Layer (10 classes)
