@@ -1,4 +1,4 @@
-#0 origin
+#0 origin 74.5%
 A[Input] --> B[conv1: Conv2d(3, 32, 3, padding=1)]
 B --> C[ReLU]
 C --> D[pool: MaxPool2d(2, 2)]
@@ -13,7 +13,7 @@ K --> L[ReLU]
 L --> M[fc2: Linear(64, 10)]
 M --> N[Output]
 
-#1 三层卷积
+#1 三层卷积 78.95%
 ConvNet
 |
 |-- Input Layer (3 channels)
