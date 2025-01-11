@@ -5,6 +5,8 @@ import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
+print(torch.cuda.is_available())
+
 # 定义数据转换操作
 transform = transforms.Compose([
     transforms.ToTensor(),
