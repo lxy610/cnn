@@ -142,7 +142,7 @@ plt.legend()
 plt.show()
 
 # 将模型导出为.onnx文件
-#input_shape = (1, 3, 32, 32)  # 定义输入形状，需和模型输入要求匹配
-#dummy_input = torch.randn(input_shape).to(device)
-#torch.onnx.export(net, dummy_input, "convnet_model.onnx", opset_version=11)
+input_shape = (1, 3, 32, 32)  # 定义输入形状，需和模型输入要求匹配
+dummy_input = torch.randn(input_shape).to(device)
+torch.onnx.export(net, dummy_input, "convnet_model.onnx", opset_version=11)
 # 这里指定了opset_version为11，你可以根据实际情况调整合适的版本号，不同版本对模型支持情况略有不同
