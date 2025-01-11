@@ -1,0 +1,45 @@
+#0 origin
+A[Input] --> B[conv1: Conv2d(3, 32, 3, padding=1)]
+B --> C[ReLU]
+C --> D[pool: MaxPool2d(2, 2)]
+D --> E[conv2: Conv2d(32, 64, 3, padding=1)]
+E --> F[ReLU]
+F --> G[pool]
+G --> H[conv3: Conv2d(64, 64, 3, padding=1)]
+H --> I[ReLU]
+I --> J[View(-1, 64*8*8)]
+J --> K[fc1: Linear(64*8*8, 64)]
+K --> L[ReLU]
+L --> M[fc2: Linear(64, 10)]
+M --> N[Output]
+
+#1 三层卷积
+ConvNet
+|
+|-- Input Layer (3 channels)
+|
+|-- conv1: Conv2d(3, 64, 3, padding=1)
+|   |-- BatchNorm2d(64)
+|   |-- ReLU Activation
+|   |-- pool: MaxPool2d(2, 2)
+|
+|-- conv2: Conv2d(64, 128, 3, padding=1)
+|   |-- BatchNorm2d(128)
+|   |-- ReLU Activation
+|   |-- pool: MaxPool2d(2, 2)
+|
+|-- conv3: Conv2d(128, 256, 3, padding=1)
+|   |-- BatchNorm2d(256)
+|   |-- ReLU Activation
+|   |-- pool: MaxPool2d(2, 2)
+|
+|-- Flatten Layer (256 * 4 * 4)
+|
+|-- dropout: Dropout(0.5)
+|
+|-- fc1: Linear(256 * 4 * 4, 512)
+|   |-- ReLU Activation
+|
+|-- fc2: Linear(512, 10)
+|
+|-- Output Layer (10 classes)

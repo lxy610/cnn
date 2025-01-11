@@ -4,8 +4,7 @@ import torchvision.transforms as transforms
 import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
-
-print(torch.cuda.is_available())
+import torch.nn.functional as F
 
 # 定义数据转换操作
 transform = transforms.Compose([
@@ -26,22 +25,26 @@ testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False)
 class ConvNet(nn.Module):
     def __init__(self):
         super(ConvNet, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, 3, padding=1)
+        self.conv1 = nn.Conv2d(3, 64, 3, padding=1)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.conv2 = nn.Conv2d(64, 128, 3, padding=1)
+        self.bn2 = nn.BatchNorm2d(128)
+        self.conv3 = nn.Conv2d(128, 256, 3, padding=1)
+        self.bn3 = nn.BatchNorm2d(256)
         self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(32, 64, 3, padding=1)
-        self.conv3 = nn.Conv2d(64, 64, 3, padding=1)
-        self.fc1 = nn.Linear(64 * 8 * 8, 64)  # 考虑到池化层后的尺寸
-        self.fc2 = nn.Linear(64, 10)
+        self.dropout = nn.Dropout(0.5)
+        self.fc1 = nn.Linear(256 * 4 * 4, 512)
+        self.fc2 = nn.Linear(512, 10)
 
     def forward(self, x):
-        x = self.pool(torch.relu(self.conv1(x)))
-        x = self.pool(torch.relu(self.conv2(x)))
-        x = torch.relu(self.conv3(x))
-        x = x.view(-1, 64 * 8 * 8)  # flatten
-        x = torch.relu(self.fc1(x))
+        x = self.pool(F.relu(self.bn1(self.conv1(x))))
+        x = self.pool(F.relu(self.bn2(self.conv2(x))))
+        x = self.pool(F.relu(self.bn3(self.conv3(x))))
+        x = x.view(-1, 256 * 4 * 4)
+        x = self.dropout(x)
+        x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
-
 
 net = ConvNet()
 
@@ -109,7 +112,7 @@ plt.legend()
 plt.show()
 
 # 将模型导出为.onnx文件
-input_shape = (1, 3, 32, 32)  # 定义输入形状，需和模型输入要求匹配
-dummy_input = torch.randn(input_shape).to(device)
-torch.onnx.export(net, dummy_input, "convnet_model.onnx", opset_version=11)
+#input_shape = (1, 3, 32, 32)  # 定义输入形状，需和模型输入要求匹配
+#dummy_input = torch.randn(input_shape).to(device)
+#torch.onnx.export(net, dummy_input, "convnet_model.onnx", opset_version=11)
 # 这里指定了opset_version为11，你可以根据实际情况调整合适的版本号，不同版本对模型支持情况略有不同
