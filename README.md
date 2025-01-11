@@ -1,13 +1,5 @@
 生成的onnx文件在 https://netron.app/ 打开
 
-
-<details>
-  <summary>安装错误汇总</summary>
-  
-# 数据集路径出错，一直指向gen1下
-
-</details>
-
 <details>
   <summary>#0 origin 74.5%</summary>
   
