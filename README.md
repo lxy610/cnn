@@ -3,6 +3,7 @@
 <details>
   <summary>#0 origin 74.5%</summary>
   
+```Bash 
   A[Input] --> B[conv1: Conv2d(3, 32, 3, padding=1)]
   B --> C[ReLU]
   C --> D[pool: MaxPool2d(2, 2)]
@@ -16,12 +17,14 @@
   K --> L[ReLU]
   L --> M[fc2: Linear(64, 10)]
   M --> N[Output]
+```
 
 </details>
 
 <details>
   <summary>#1 三层卷积 78.95%</summary>
-  
+
+  ```bash
   ConvNet
   |
   |-- Input Layer (3 channels)
@@ -51,12 +54,12 @@
   |-- fc2: Linear(512, 10)
   |
   |-- Output Layer (10 classes)
-
+```
 </details>
 
 <details>
   <summary>#2 加入残差 81.82%</summary>
-  
+  ```bash
   ConvNet
   |
   |-- Input Layer (3 channels)
@@ -110,7 +113,7 @@
   |-- fc2: Linear(512, 10)
   |
   |-- Output Layer (10 classes)
-
+```
 </details>
 
 <details>
