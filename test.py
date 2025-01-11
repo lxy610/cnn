@@ -41,12 +41,12 @@ class ResidualBlock(nn.Module):
         identity = self.shortcut(x)
 
         out = self.conv1(x)
-        out = F.relu(self.bn1(out))
+        out = F.gelu(self.bn1(out))
         out = self.conv2(out)
         out = self.bn2(out)
 
         out += identity
-        out = F.relu(out)
+        out = F.gelu(out)
         return out
 
 
@@ -65,14 +65,14 @@ class ConvNet(nn.Module):
         self.fc2 = nn.Linear(512, 10)
 
     def forward(self, x):
-        x = F.relu(self.bn1(self.conv1(x)))
+        x = F.gelu(self.bn1(self.conv1(x)))
         x = self.resblock1(x)
         x = self.resblock2(x)
         x = self.resblock3(x)
         x = self.pool(x)
         x = x.view(-1, 256 * 4 * 4)
         x = self.dropout(x)
-        x = F.relu(self.fc1(x))
+        x = F.gelu(self.fc1(x))
         x = self.fc2(x)
         return x
 
